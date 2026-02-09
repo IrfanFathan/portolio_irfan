@@ -1,7 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaEnvelope, FaCode, FaMicrochip, FaPython, FaWifi, FaTools, FaCog, FaChartLine, FaProjectDiagram, FaDraftingCompass, FaLayerGroup, FaTrophy, FaRocket, FaRobot, FaUsers, FaHandshake, FaCodeBranch, FaFileAlt, FaMapMarkerAlt, FaFlask, FaTint, FaEye, FaThermometerHalf, FaCloud, FaStar, FaCheckCircle, FaBuilding, FaCalendarAlt, FaMobileAlt } from 'react-icons/fa';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaGithub, FaLinkedin, FaEnvelope, FaCode, FaMicrochip, FaPython, FaWifi, FaTools, FaCog, FaChartLine, FaProjectDiagram, FaDraftingCompass, FaLayerGroup, FaTrophy, FaRocket, FaRobot, FaUsers, FaHandshake, FaCodeBranch, FaFileAlt, FaMapMarkerAlt, FaFlask, FaTint, FaEye, FaThermometerHalf, FaCloud, FaStar, FaCheckCircle, FaBuilding, FaCalendarAlt, FaBars, FaTimes } from 'react-icons/fa';
 import { SiC, SiCplusplus, SiDart } from 'react-icons/si';
 import Tilt from 'react-parallax-tilt';
 import ParticleField from '@/components/3d/ParticleField';
@@ -9,35 +10,76 @@ import FloatingChip from '@/components/3d/FloatingChip';
 import WaveBackground from '@/components/3d/WaveBackground';
 
 export default function Home() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navItems = ['Home', 'About', 'Skills', 'Experience', 'Projects', 'Activities', 'Contact'];
+
   return (
-    <main className="relative min-h-screen">
+    <main className="relative min-h-screen text-black bg-[#FAFAFA] font-sans selection:bg-black selection:text-white">
       <WaveBackground />
       {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass">
+      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-black/10 bg-white/80 font-mono">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <motion.h1
-            className="text-2xl font-bold gradient-text"
+            className="text-xl font-bold tracking-tighter uppercase"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
           >
             Irfan Fathan M
           </motion.h1>
-          <div className="hidden md:flex gap-6">
-            {['Home', 'About', 'Skills', 'Experience', 'Projects', 'Contact'].map((item) => (
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex gap-6 text-sm uppercase tracking-wide font-medium">
+            {navItems.map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                className="text-text-muted hover:text-cyan transition-colors duration-300"
+                className="hover:underline underline-offset-4 decoration-2 decoration-black transition-all hover:bg-black hover:text-white px-2 py-1"
               >
                 {item}
               </a>
             ))}
           </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden text-2xl focus:outline-none"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle Menu"
+          >
+            {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+          </button>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: '100vh' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden absolute top-full left-0 right-0 bg-white border-b border-black overflow-hidden flex flex-col items-center justify-center gap-8 shadow-2xl"
+              style={{ top: '60px' }} // Approx navbar height
+            >
+              {navItems.map((item, i) => (
+                <motion.a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="text-2xl font-black uppercase tracking-widest hover:text-gray-500"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item}
+                </motion.a>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <ParticleField />
         <div className="relative z-10 max-w-7xl mx-auto px-6 py-20">
           <motion.div
@@ -46,32 +88,33 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             className="text-center md:text-left"
           >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6">
-              Hi, I'm <span className="gradient-text">Irfan Fathan M</span>
+            <h1 className="text-5xl md:text-8xl font-black mb-6 tracking-tighter leading-none font-mono">
+              IRFAN FATHAN M
             </h1>
-            <h2 className="text-2xl md:text-3xl text-text-muted mb-8">
-              Electronics and Communication Engineering Student | Embedded Systems & IoT Enthusiast
+            <h2 className="text-xl md:text-2xl text-gray-600 mb-8 uppercase tracking-widest border-l-4 border-black pl-4 font-mono">
+              Electronics & Communication Engineer <br />
+              <span className="text-black font-bold">Embedded Systems | IoT | Robotics</span>
             </h2>
-            <p className="text-lg text-text-muted max-w-3xl mb-12 leading-relaxed">
-              Passionate about designing innovative hardware solutions through embedded systems, microcontrollers, and IoT technologies.
-              Experienced in developing robust prototypes using ESP32, Arduino, and advanced sensor integration for real-world applications.
+            <p className="text-lg text-gray-700 max-w-3xl mb-12 leading-relaxed font-sans">
+              Designing innovative hardware solutions through precise engineering.
+              Specializing in <span className="font-bold border-b border-black font-mono">ESP32</span>, <span className="font-bold border-b border-black font-mono">Arduino</span>, and advanced sensor integration.
             </p>
-            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start font-mono">
               <motion.a
                 href="#projects"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 bg-gradient-to-r from-cyan to-green text-primary rounded-lg font-semibold flex items-center gap-2"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="px-8 py-4 bg-black text-white rounded-none border border-black font-bold uppercase tracking-wider hover:bg-white hover:text-black transition-colors shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
               >
-                <FaCode /> View Projects
+                View Projects
               </motion.a>
               <motion.a
                 href="#contact"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-4 glass text-cyan rounded-lg font-semibold flex items-center gap-2 border border-cyan"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="px-8 py-4 bg-transparent text-black rounded-none border border-black font-bold uppercase tracking-wider hover:bg-black hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,0)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
               >
-                <FaEnvelope /> Contact Me
+                Contact Me
               </motion.a>
             </div>
           </motion.div>
@@ -79,50 +122,53 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="relative py-20 bg-secondary">
+      <section id="about" className="relative py-24 bg-[#F0F0F0]">
         <div className="max-w-7xl mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16"
+            className="text-4xl font-black uppercase mb-16 border-b-2 border-black inline-block pb-2 font-mono"
           >
-            About Me
+            01. About Me
           </motion.h2>
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               className="flex justify-center"
             >
-              <FloatingChip />
+              <div className="relative">
+                <div className="absolute inset-0 border-2 border-black translate-x-4 translate-y-4"></div>
+                <div className="relative bg-white border-2 border-black p-4">
+                  <FloatingChip />
+                </div>
+              </div>
             </motion.div>
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-3xl font-bold text-green mb-6">Building the Future with Hardware & Software</h3>
-              <p className="text-text-muted mb-4 leading-relaxed">
-                I am currently pursuing my <strong>B.Tech in Electronics and Communication Engineering</strong> at
-                <strong> Eranad Knowledge City Technical Campus</strong>, where I've developed a strong foundation in
-                embedded systems design, digital electronics, and communication technologies.
+              <h3 className="text-2xl font-bold mb-6 uppercase tracking-wide font-mono">Building the Future with Hardware & Software</h3>
+              <p className="text-gray-700 mb-4 leading-relaxed text-justify font-sans">
+                Pursuing <strong>B.Tech in Electronics and Communication Engineering</strong> at <strong>Eranad Knowledge City Technical Campus</strong>.
+                My focus is on transforming valid technical theory into functional reality.
               </p>
-              <p className="text-text-muted mb-6 leading-relaxed">
-                My core interests lie in <strong>embedded systems, robotics, IoT, and automation</strong>. I thrive on
-                transforming complex technical challenges into elegant, functional solutions through hands-on prototyping
-                and innovative problem-solving.
+              <p className="text-gray-700 mb-8 leading-relaxed text-justify font-sans">
+                Core interests: <strong className="font-mono text-sm">Embedded Systems, Robotics, IoT, Automation</strong>.
               </p>
-              <div className="glass p-6 rounded-lg border-l-4 border-cyan mb-6">
-                <h4 className="flex items-center gap-2 text-cyan font-semibold mb-3">
+
+              <div className="bg-white p-6 border-l-4 border-black shadow-sm mb-8">
+                <h4 className="flex items-center gap-2 font-bold mb-2 uppercase text-sm tracking-wider font-mono">
                   <FaStar /> Career Objective
                 </h4>
-                <p className="text-text-muted leading-relaxed">
-                  To leverage my expertise in embedded systems and IoT to build reliable, innovative hardware solutions
-                  that solve real-world problems. I aim to contribute to cutting-edge projects in robotics and automation.
+                <p className="text-gray-600 italic font-sans">
+                  &quot;To leverage expertise in embedded systems and IoT to build reliable, innovative hardware solutions.&quot;
                 </p>
               </div>
+
               <div className="grid grid-cols-3 gap-4">
                 {[
                   { icon: FaProjectDiagram, value: '5+', label: 'Projects' },
@@ -132,11 +178,11 @@ export default function Home() {
                   <motion.div
                     key={i}
                     whileHover={{ y: -5 }}
-                    className="glass p-4 rounded-lg text-center"
+                    className="bg-white border border-black p-4 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all font-mono"
                   >
-                    <stat.icon className="text-3xl text-cyan mx-auto mb-2" />
-                    <h4 className="text-2xl font-bold text-green">{stat.value}</h4>
-                    <p className="text-sm text-text-muted">{stat.label}</p>
+                    <stat.icon className="text-2xl mb-2 mx-auto" />
+                    <h4 className="text-3xl font-black">{stat.value}</h4>
+                    <p className="text-xs uppercase font-bold tracking-wider">{stat.label}</p>
                   </motion.div>
                 ))}
               </div>
@@ -146,17 +192,17 @@ export default function Home() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="relative py-20">
+      <section id="skills" className="relative py-24">
         <div className="max-w-7xl mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-center mb-4"
+            className="text-4xl font-black uppercase mb-4 border-b-2 border-black inline-block pb-2 font-mono"
           >
-            Technical Skills
+            02. Technical Skills
           </motion.h2>
-          <p className="text-center text-text-muted mb-16">My toolkit for building innovative embedded systems and IoT solutions</p>
+          <p className="text-gray-600 mb-16 max-w-2xl font-sans">Tools and technologies for building robust embedded systems.</p>
 
           <div className="grid md:grid-cols-2 gap-8">
             {[
@@ -206,22 +252,21 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
                 whileHover={{ y: -5 }}
-                className="glass p-6 rounded-xl"
+                className="bg-white border border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] rounded-none"
               >
-                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-card-border">
-                  <category.icon className="text-3xl text-cyan" />
-                  <h3 className="text-xl font-bold">{category.title}</h3>
+                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-black/10">
+                  <category.icon className="text-3xl" />
+                  <h3 className="text-xl font-bold uppercase tracking-wider font-mono">{category.title}</h3>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   {category.skills.map((skill, j) => (
-                    <motion.div
+                    <div
                       key={j}
-                      whileHover={{ scale: 1.05, backgroundColor: 'rgba(100, 255, 218, 0.2)' }}
-                      className="flex items-center gap-2 bg-green/10 px-4 py-2 rounded-lg text-sm font-medium cursor-default"
+                      className="flex items-center gap-2 border border-black px-4 py-2 text-sm font-bold uppercase hover:bg-black hover:text-white transition-colors cursor-default font-mono"
                     >
                       <skill.icon className="text-lg" />
                       {skill.name}
-                    </motion.div>
+                    </div>
                   ))}
                 </div>
               </motion.div>
@@ -231,15 +276,15 @@ export default function Home() {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="relative py-20 bg-secondary">
+      <section id="experience" className="relative py-24 bg-[#F0F0F0]">
         <div className="max-w-5xl mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16"
+            className="text-4xl font-black uppercase mb-16 border-b-2 border-black inline-block pb-2 font-mono"
           >
-            Professional Experience
+            03. Experience
           </motion.h2>
 
           <motion.div
@@ -247,22 +292,22 @@ export default function Home() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             whileHover={{ x: 10 }}
-            className="relative pl-8 border-l-2 border-cyan"
+            className="relative border-l-2 border-black pl-8"
           >
-            <div className="absolute -left-2 top-0 w-4 h-4 bg-cyan rounded-full shadow-lg shadow-cyan/50" />
-            <div className="glass p-8 rounded-xl">
-              <div className="flex flex-wrap justify-between items-start mb-4">
+            <div className="absolute -left-[9px] top-0 w-4 h-4 bg-black rounded-none rotate-45" />
+            <div className="bg-white border border-black p-8 shadow-sm">
+              <div className="flex flex-wrap justify-between items-start mb-6">
                 <div>
-                  <h3 className="text-2xl font-bold text-green mb-2">Robotics and IoT Intern</h3>
-                  <h4 className="flex items-center gap-2 text-lg text-text-muted">
+                  <h3 className="text-2xl font-black uppercase font-mono">Robotics and IoT Intern</h3>
+                  <h4 className="flex items-center gap-2 text-lg font-medium text-gray-700 mt-1 font-mono">
                     <FaBuilding /> Innoknowvex, Bangalore
                   </h4>
                 </div>
-                <span className="flex items-center gap-2 bg-cyan/10 text-cyan px-4 py-2 rounded-lg">
+                <span className="flex items-center gap-2 bg-black text-white px-4 py-2 font-bold text-sm font-mono">
                   <FaCalendarAlt /> 2024
                 </span>
               </div>
-              <ul className="space-y-3">
+              <ul className="space-y-4">
                 {[
                   'Designed and developed embedded systems using ESP32 and Arduino platforms for IoT applications',
                   'Integrated multiple sensors including pH, TDS, turbidity, and temperature sensors for real-time data acquisition',
@@ -271,8 +316,8 @@ export default function Home() {
                   'Performed system troubleshooting and debugging to ensure reliable operation in field conditions',
                   'Collaborated with cross-functional teams to deliver end-to-end embedded solutions'
                 ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-text-muted">
-                    <FaCheckCircle className="text-green mt-1 flex-shrink-0" />
+                  <li key={i} className="flex items-start gap-4 text-gray-700 font-sans">
+                    <span className="mt-1.5 w-2 h-2 bg-black flex-shrink-0 rotate-45"></span>
                     <span>{item}</span>
                   </li>
                 ))}
@@ -283,38 +328,38 @@ export default function Home() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="relative py-20">
+      <section id="projects" className="relative py-24">
         <div className="max-w-7xl mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-center mb-4"
+            className="text-4xl font-black uppercase mb-4 border-b-2 border-black inline-block pb-2 font-mono"
           >
-            Featured Projects
+            04. Projects
           </motion.h2>
-          <p className="text-center text-text-muted mb-16">Innovative solutions combining hardware and software</p>
+          <p className="text-gray-600 mb-16 max-w-2xl font-sans">Hardware & Software Integration.</p>
 
-          <Tilt tiltMaxAngleX={5} tiltMaxAngleY={5} scale={1.02} transitionSpeed={2500}>
+          <Tilt tiltMaxAngleX={2} tiltMaxAngleY={2} scale={1.01} transitionSpeed={2500}>
             <motion.div
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="glass p-8 rounded-xl"
+              className="bg-white border-2 border-black p-10 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
             >
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-3xl font-bold">AQUA Intel</h3>
-                <span className="bg-gradient-to-r from-cyan to-green text-primary px-4 py-1 rounded-lg text-sm font-bold">
-                  FEATURED
+              <div className="flex justify-between items-start mb-6">
+                <h3 className="text-3xl font-black uppercase font-mono">AQUA Intel</h3>
+                <span className="bg-black text-white px-4 py-1 text-sm font-bold uppercase tracking-wider font-mono">
+                  Featured
                 </span>
               </div>
-              <p className="text-xl text-green mb-4 font-semibold">Smart Water Quality Monitoring System</p>
-              <p className="text-text-muted mb-6 leading-relaxed">
+              <p className="text-xl font-bold mb-4 border-b border-gray-200 pb-2 font-mono">Smart Water Quality Monitoring System</p>
+              <p className="text-gray-700 mb-8 leading-relaxed max-w-3xl font-sans">
                 An ESP32-based IoT solution for real-time water quality monitoring using multiple sensors.
                 The system classifies water into safe, abnormal, or dangerous categories based on pH, TDS,
                 turbidity, and temperature readings, with live data visualization through Blynk platform.
               </p>
-              <div className="flex flex-wrap gap-2 mb-6">
+              <div className="flex flex-wrap gap-2 mb-8">
                 {[
                   { name: 'ESP32', icon: FaWifi },
                   { name: 'pH Sensor', icon: FaFlask },
@@ -323,23 +368,24 @@ export default function Home() {
                   { name: 'DS18B20', icon: FaThermometerHalf },
                   { name: 'Blynk IoT', icon: FaCloud }
                 ].map((tech, i) => (
-                  <span key={i} className="flex items-center gap-2 bg-green/10 text-green px-3 py-1 rounded-lg text-sm">
+                  <span key={i} className="flex items-center gap-2 border border-black px-3 py-1 text-sm font-bold hover:bg-black hover:text-white transition-colors font-mono">
                     <tech.icon /> {tech.name}
                   </span>
                 ))}
               </div>
-              <div className="bg-cyan/5 p-6 rounded-lg mb-6">
-                <h4 className="flex items-center gap-2 text-cyan font-semibold mb-3">
+              <div className="bg-gray-50 border border-gray-200 p-6 mb-8">
+                <h4 className="flex items-center gap-2 font-bold mb-4 uppercase text-sm">
                   <FaStar /> Key Features
                 </h4>
-                <ul className="space-y-2">
+                <ul className="grid md:grid-cols-2 gap-4">
                   {[
                     'Real-time multi-parameter water quality monitoring',
                     'Intelligent water classification algorithm',
                     'Cloud-based data logging and visualization',
                     'Mobile app integration for remote access'
                   ].map((feature, i) => (
-                    <li key={i} className="text-text-muted pl-4 relative before:content-['▹'] before:absolute before:left-0 before:text-green">
+                    <li key={i} className="flex items-center gap-2 text-sm font-mono">
+                      <FaCheckCircle className="text-black" />
                       {feature}
                     </li>
                   ))}
@@ -350,7 +396,7 @@ export default function Home() {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ x: 5 }}
-                className="inline-flex items-center gap-2 text-cyan font-semibold"
+                className="inline-flex items-center gap-2 font-bold uppercase underline underline-offset-4 decoration-2 decoration-black font-mono"
               >
                 <FaGithub /> View on GitHub
               </motion.a>
@@ -360,15 +406,15 @@ export default function Home() {
       </section>
 
       {/* Certifications Section */}
-      <section id="certifications" className="relative py-20 bg-secondary">
+      <section id="certifications" className="relative py-24 bg-[#F0F0F0]">
         <div className="max-w-7xl mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16"
+            className="text-4xl font-black uppercase mb-16 border-b-2 border-black inline-block pb-2 font-mono"
           >
-            Certifications & Achievements
+            05. Certifications
           </motion.h2>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -382,7 +428,7 @@ export default function Home() {
               },
               {
                 icon: FaRocket,
-                title: 'NASA Space Apps Challenge',
+                title: 'NASA Space Apps',
                 subtitle: 'Global Hackathon',
                 description: 'Global Participant',
                 year: '2024'
@@ -402,18 +448,18 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
                 whileHover={{ y: -10 }}
-                className="glass p-8 rounded-xl text-center"
+                className="bg-white border border-black p-8 text-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all"
               >
                 <motion.div
-                  animate={{ y: [0, -10, 0] }}
+                  animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 3, repeat: Infinity }}
                 >
-                  <cert.icon className="text-6xl text-cyan mx-auto mb-6" />
+                  <cert.icon className="text-4xl mx-auto mb-6" />
                 </motion.div>
-                <h3 className="text-xl font-bold mb-2">{cert.title}</h3>
-                <p className="text-green font-semibold mb-2">{cert.subtitle}</p>
-                <p className="text-text-muted mb-4">{cert.description}</p>
-                <span className="inline-block bg-cyan/10 text-cyan px-4 py-1 rounded-lg text-sm font-semibold">
+                <h3 className="text-xl font-bold mb-2 uppercase">{cert.title}</h3>
+                <p className="font-semibold mb-2 text-gray-800">{cert.subtitle}</p>
+                <p className="text-gray-600 mb-6 text-sm">{cert.description}</p>
+                <span className="inline-block bg-black text-white px-4 py-1 text-xs font-bold uppercase tracking-wider">
                   {cert.year}
                 </span>
               </motion.div>
@@ -422,16 +468,95 @@ export default function Home() {
         </div>
       </section>
 
+
+      {/* Activities Section */}
+      <section id="activities" className="relative py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-4xl font-black uppercase mb-16 border-b-2 border-black inline-block pb-2 font-mono"
+          >
+            06. Activities
+          </motion.h2>
+
+          <div className="space-y-12">
+            {[
+              {
+                title: 'IEDC Summit 2023',
+                location: 'College of Engineering Trivandrum',
+                date: '12 October 2023',
+                description: 'Participated in IEDC Submit 2023, engaging with fellow innovators and industry leaders.',
+                link: 'https://drive.google.com/file/d/1Cx-54yd4pVRGY3p5IaJYtJ5g-FrTGAne/view',
+                linkText: 'View Certificate'
+              },
+              {
+                title: 'NASA Space Apps Challenge',
+                location: 'Global Hackathon',
+                date: '2023, 2024, 2025',
+                description: 'Collaborated on innovative problem-solving challenges in the annual NASA Space Apps Global Hackathon.',
+                link: 'https://drive.google.com/file/d/11A6B-WlbObFjh_8kpF5nzszmuDmNXE0z/view',
+                linkText: 'View Proof'
+              },
+              {
+                title: 'IEEE YES 2025',
+                location: 'NIT Calicut',
+                date: '2025',
+                description: 'Attended the IEEE Young Engineers Summit (YES) 2025, organized by IEEE Kerala Section.',
+                link: 'https://drive.google.com/file/d/12JkNxeM5E4w3ufQDOkpiXvUIei8CNM3I/view',
+                linkText: 'View Certificate'
+              },
+              {
+                title: 'Malabar College Techfest',
+                location: 'Malabar College',
+                date: 'Annual',
+                description: 'Actively participated in the CEO Pitch idea pitching competition during the annual tech fest.',
+                link: null,
+                linkText: null
+              }
+            ].map((activity, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="flex flex-col md:flex-row gap-6 items-start border-l-2 border-black pl-6 hover:pl-8 transition-all"
+              >
+                <div className="md:w-1/4">
+                  <span className="block font-mono text-sm font-bold text-gray-500 mb-1">{activity.date}</span>
+                  <h3 className="font-bold text-lg font-mono uppercase">{activity.title}</h3>
+                  <span className="text-sm font-medium text-gray-600 font-mono">{activity.location}</span>
+                </div>
+                <div className="md:w-3/4">
+                  <p className="text-gray-700 mb-3 font-sans max-w-2xl">{activity.description}</p>
+                  {activity.link && (
+                    <a
+                      href={activity.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sm font-bold uppercase underline underline-offset-4 decoration-2 decoration-black hover:bg-black hover:text-white px-1 -ml-1 transition-colors font-mono"
+                    >
+                      <FaFileAlt /> {activity.linkText}
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Leadership Section */}
-      <section id="leadership" className="relative py-20">
+      <section id="leadership" className="relative py-24">
         <div className="max-w-5xl mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-center mb-16"
+            className="text-4xl font-black uppercase mb-16 border-b-2 border-black inline-block pb-2 font-mono"
           >
-            Leadership & Activities
+            07. Leadership
           </motion.h2>
 
           <motion.div
@@ -439,13 +564,13 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             whileHover={{ y: -5 }}
-            className="glass p-8 rounded-xl"
+            className="bg-white border border-black p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
           >
-            <div className="flex flex-col md:flex-row gap-6">
-              <FaUsers className="text-6xl text-cyan flex-shrink-0" />
+            <div className="flex flex-col md:flex-row gap-8 items-start">
+              <FaUsers className="text-5xl flex-shrink-0 border-2 border-black p-2 rounded-full" />
               <div>
-                <h3 className="text-2xl font-bold text-green mb-4">Team Member - Motridox Robotics</h3>
-                <p className="text-text-muted mb-6 leading-relaxed">
+                <h3 className="text-2xl font-black mb-4 uppercase font-mono">Team Member - Motridox Robotics</h3>
+                <p className="text-gray-700 mb-8 leading-relaxed font-sans">
                   Active contributor to a collaborative robotics team focused on innovation and technical excellence.
                 </p>
                 <div className="grid md:grid-cols-2 gap-4">
@@ -455,14 +580,13 @@ export default function Home() {
                     { icon: FaFileAlt, label: 'Technical Documentation' },
                     { icon: FaProjectDiagram, label: 'Team Coordination' }
                   ].map((activity, i) => (
-                    <motion.div
+                    <div
                       key={i}
-                      whileHover={{ scale: 1.05, backgroundColor: 'rgba(100, 255, 218, 0.2)' }}
-                      className="flex items-center gap-3 bg-green/10 p-3 rounded-lg"
+                      className="flex items-center gap-3 border border-gray-200 p-3 hover:bg-black hover:text-white transition-colors font-mono"
                     >
-                      <activity.icon className="text-cyan text-xl" />
-                      <span className="font-medium">{activity.label}</span>
-                    </motion.div>
+                      <activity.icon className="text-lg" />
+                      <span className="font-bold text-sm uppercase">{activity.label}</span>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -472,57 +596,57 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="relative py-20 bg-secondary">
+      <section id="contact" className="relative py-24 bg-black text-white">
         <div className="max-w-7xl mx-auto px-6">
           <motion.h2
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bold text-center mb-4"
+            className="text-4xl font-black uppercase mb-4 border-b-2 border-white inline-block pb-2 font-mono"
           >
-            Get In Touch
+            08. Get In Touch
           </motion.h2>
-          <p className="text-center text-text-muted mb-16">Let's collaborate on innovative projects</p>
+          <p className="text-gray-400 mb-16 max-w-xl font-sans">Let&apos;s collaborate on innovative projects.</p>
 
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-16">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl font-bold text-green mb-8">Contact Information</h3>
-              <div className="space-y-6 mb-8">
+              <h3 className="text-2xl font-bold mb-8 uppercase">Contact Information</h3>
+              <div className="space-y-8 mb-12">
                 <div className="flex items-start gap-4">
-                  <FaEnvelope className="text-2xl text-cyan mt-1" />
+                  <FaEnvelope className="text-2xl mt-1" />
                   <div>
-                    <h4 className="text-text-muted text-sm mb-1">Email</h4>
-                    <a href="mailto:irfanfathan@example.com" className="text-cyan hover:text-green transition-colors">
-                      irfanfathan@example.com
+                    <h4 className="text-gray-400 text-sm mb-1 uppercase tracking-wider font-mono">Email</h4>
+                    <a href="mailto:irfanfathan.m@gmail.com" className="text-xl font-bold hover:underline font-mono">
+                      irfanfathan.m@gmail.com
                     </a>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
-                  <FaMapMarkerAlt className="text-2xl text-cyan mt-1" />
+                  <FaMapMarkerAlt className="text-2xl mt-1" />
                   <div>
-                    <h4 className="text-text-muted text-sm mb-1">Location</h4>
-                    <p>Manjeri, Kerala, India</p>
+                    <h4 className="text-gray-400 text-sm mb-1 uppercase tracking-wider font-mono">Location</h4>
+                    <p className="text-xl font-bold font-mono">Manjeri, Kerala, India</p>
                   </div>
                 </div>
               </div>
-              <h4 className="text-lg font-semibold mb-4">Connect With Me</h4>
+              <h4 className="text-sm font-bold uppercase tracking-wider mb-6 text-gray-400">Socials</h4>
               <div className="flex gap-4">
                 {[
                   { icon: FaLinkedin, href: 'https://linkedin.com/in/irfanfathan', label: 'LinkedIn' },
                   { icon: FaGithub, href: 'https://github.com/irfanfathan', label: 'GitHub' },
-                  { icon: FaEnvelope, href: 'mailto:irfanfathan@example.com', label: 'Email' }
+                  { icon: FaEnvelope, href: 'mailto:irfanfathan.m@gmail.com', label: 'Email' }
                 ].map((social, i) => (
                   <motion.a
                     key={i}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    whileHover={{ y: -5, backgroundColor: 'var(--color-accent-cyan)', color: 'var(--color-primary-bg)' }}
-                    className="glass w-14 h-14 flex items-center justify-center rounded-lg text-2xl text-cyan border border-card-border"
+                    whileHover={{ y: -5, backgroundColor: '#ffffff', color: '#000000' }}
+                    className="w-14 h-14 flex items-center justify-center border border-white/20 text-2xl transition-all"
                     aria-label={social.label}
                   >
                     <social.icon />
@@ -535,40 +659,40 @@ export default function Home() {
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="glass p-8 rounded-xl"
+              className="bg-[#121212] border border-white/10 p-8"
             >
-              <form className="space-y-6">
+              <form className="space-y-6 font-mono">
                 <div>
-                  <label className="block text-sm font-semibold mb-2">Name</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Name</label>
                   <input
                     type="text"
-                    className="w-full bg-primary/50 border border-card-border rounded-lg px-4 py-3 focus:outline-none focus:border-cyan transition-colors"
-                    placeholder="Your Name"
+                    className="w-full bg-black border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+                    placeholder="YOUR NAME"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-2">Email</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Email</label>
                   <input
                     type="email"
-                    className="w-full bg-primary/50 border border-card-border rounded-lg px-4 py-3 focus:outline-none focus:border-cyan transition-colors"
-                    placeholder="your.email@example.com"
+                    className="w-full bg-black border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors"
+                    placeholder="YOUR.EMAIL@EXAMPLE.COM"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold mb-2">Message</label>
+                  <label className="block text-xs font-bold uppercase tracking-wider mb-2 text-gray-400">Message</label>
                   <textarea
                     rows={5}
-                    className="w-full bg-primary/50 border border-card-border rounded-lg px-4 py-3 focus:outline-none focus:border-cyan transition-colors resize-none"
-                    placeholder="Your message..."
+                    className="w-full bg-black border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-white transition-colors resize-none"
+                    placeholder="YOUR MESSAGE..."
                   />
                 </div>
                 <motion.button
                   type="submit"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-cyan to-green text-primary py-4 rounded-lg font-semibold flex items-center justify-center gap-2"
+                  className="w-full bg-white text-black py-4 font-black uppercase tracking-widest hover:bg-gray-200 transition-colors"
                 >
-                  <FaEnvelope /> Send Message
+                  Send Message
                 </motion.button>
               </form>
             </motion.div>
@@ -577,10 +701,10 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="relative py-8 border-t border-card-border">
+      <footer className="relative py-8 border-t border-white/10 bg-black text-white">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <p className="text-text-muted mb-2">&copy; 2026 Irfan Fathan M. All rights reserved.</p>
-          <p className="text-cyan text-sm">Built with passion for embedded systems and IoT</p>
+          <p className="text-gray-500 mb-2 font-mono text-sm">&copy; 2026 Irfan Fathan M. All rights reserved.</p>
+          <p className="text-white text-xs uppercase tracking-widest">Built with passion for embedded systems and IoT</p>
         </div>
       </footer>
     </main>

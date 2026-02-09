@@ -2,14 +2,13 @@
 
 import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Plane } from '@react-three/drei';
 import * as THREE from 'three';
 
 function WaveMesh() {
     const meshRef = useRef<THREE.Mesh>(null);
 
     // Create a grid of points
-    const { geometry, colors } = useMemo(() => {
+    const { geometry } = useMemo(() => {
         const geometry = new THREE.PlaneGeometry(15, 15, 64, 64);
         const count = geometry.attributes.position.count;
         const colors = new Float32Array(count * 3);
@@ -54,9 +53,9 @@ function WaveMesh() {
         <mesh ref={meshRef} geometry={geometry}>
             <meshStandardMaterial
                 wireframe
-                color="#00d9ff"
+                color="#1a1a1a"
                 transparent
-                opacity={0.15}
+                opacity={0.1}
                 side={THREE.DoubleSide}
             />
         </mesh>
