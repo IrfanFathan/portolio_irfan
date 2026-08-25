@@ -15,6 +15,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Irfan Fathan M | Embedded Systems & IoT Engineer",
   description: "Portfolio of Irfan Fathan M - Electronics and Communication Engineering Student specializing in Embedded Systems, IoT, and Robotics",
+  verification: {
+    google: "google28bcbe870bc1c06c",
+  },
 };
 
 export default function RootLayout({
